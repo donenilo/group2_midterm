@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   query: "",
   debouncedQuery: "",
+  tag: "",
+  sort: "",
 };
 
 const filtersSlice = createSlice({

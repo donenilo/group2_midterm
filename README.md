@@ -1,16 +1,18 @@
-# React + Vite
+## MIDTERM PROJECT FOR APPLICATION DEVELOPMENT
+## Group 2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Sarah Nicole Anoso
+- Sherrie Borbon
+- Danilo Buenaventura
+- Youone Christian Clamar
+- Paulo Anriv Manalo
 
-Currently, two official plugins are available:
+## Genius OAuth setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+To start the Genius authorization flow, set these environment variables in a local `.env.local` file:
 
-## React Compiler
+- `VITE_GENIUS_CLIENT_ID`
+- `VITE_GENIUS_REDIRECT_URI`
+- `VITE_GENIUS_SCOPE`
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The app will send the user to Genius&apos; authorization page from the Connect Genius button. The redirect URI should point back to this app, and the returned authorization code must be exchanged for an access token on a backend or serverless endpoint. Once you have that token, set `GENIUS_ACCESS_TOKEN` for the search proxy.

@@ -1,19 +1,19 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
-import SearchBar from './components/SearchBar';
-import SongList from './components/SongList';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import SongListPage from './pages/SongListPage';
+import SongDetailsPage from './pages/SongDetailsPage';
 import './App.css';
 
 function App() {
   return (
-    <Provider store={store}>
-      <div className="app">
-        <h1>Lyrics App</h1>
-        <SearchBar />
-        <SongList />
-      </div>
-    </Provider>
+    <div className="app">
+      <h1>Lyrics App</h1>
+      <Routes>
+        <Route path="/" element={<Navigate to="/songs" replace />} />
+        <Route path="/songs" element={<SongListPage />} />
+        <Route path="/songs/:songId" element={<SongDetailsPage />} />
+      </Routes>
+    </div>
   );
 }
 

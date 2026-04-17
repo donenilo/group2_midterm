@@ -8,21 +8,33 @@ export const geniusApi = createApi({
     searchSongs: builder.query({
       query: ({ q, tag, sort }) => {
         const params = new URLSearchParams();
-        if (q)    params.set("q", q);
-        if (tag)  params.set("q", `${q} ${tag}`);
-        if (sort) params.set("sort", sort);
-        return `?${params.toString()}`;
+        const searchText = [q, tag].filter(Boolean).join(" ");
+        if (searchText) params.set("q", searchText);
+        return `/search?${params.toString()}`;
       },
-      transformResponse: (res) =>
-        res.response.hits.map((h) => h.result),
+      transformResponse: (res) => {
+        const hits = res?.response?.hits;
+        if (!Array.isArray(hits)) {
+          return [];
+        }
+        return hits.map((h) => h.result);
+      },
     }),
 
     getSongById: builder.query({
-      query: (id) => `?id=${id}`,
+      query: (id) => `/songs/${id}`,
       transformResponse: (res) => res.response.song,
+    }),
+
+    getSongReferents: builder.query({
+      query: (songId) => `/referents?song_id=${songId}&per_page=50`,
+      transformResponse: (res) => {
+        const referents = res?.response?.referents;
+        return Array.isArray(referents) ? referents : [];
+      },
     }),
 
   }),
 });
 
-export const { useSearchSongsQuery, useGetSongByIdQuery } = geniusApi;
+export const { useSearchSongsQuery, useGetSongByIdQuery, useGetSongReferentsQuery } = geniusApi;

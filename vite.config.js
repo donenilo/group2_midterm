@@ -12,6 +12,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+  const geniusToken = (env.VITE_GENIUS_ACCESS_TOKEN || env.GENIUS_ACCESS_TOKEN || '').trim()
 
   return {
     plugins: [react()],
@@ -20,9 +21,9 @@ export default defineConfig(({ mode }) => {
         '/api/genius': {
           target: 'https://api.genius.com',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/genius/, '/search'),
+          rewrite: (path) => path.replace(/^\/api\/genius/, ''),
           headers: {
-            Authorization: `Bearer ${env.GENIUS_ACCESS_TOKEN}`
+            Authorization: `Bearer ${geniusToken}`
           }
         }
       }
