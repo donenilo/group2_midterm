@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useGetSongByIdQuery, useGetSongReferentsQuery } from '../services/geniusApi';
+import { useGetSongByIdQuery, useGetSongReferentsQuery, useGetLyricsQuery } from '../services/geniusApi';
 
 function SongDetailsPage() {
   const { songId } = useParams();
@@ -14,6 +14,13 @@ function SongDetailsPage() {
   } = useGetSongReferentsQuery(songId, {
     skip: !songId,
   });
+
+  const artistName = song?.primary_artist?.name || '';
+  const songTitle = song?.title || '';
+  const { data: lyrics, isLoading: isLyricsLoading, isError: isLyricsError } = useGetLyricsQuery(
+    { artist: artistName, title: songTitle },
+    { skip: !artistName || !songTitle }
+  );
 
   if (!songId) {
     return <p>Missing song id.</p>;
@@ -67,30 +74,17 @@ function SongDetailsPage() {
 
       <section className="song-lyrics-panel" aria-label="Song lyrics">
         <p className="auth-panel__eyebrow">Lyrics</p>
-        <h2>Lyric referents</h2>
-        <p className="song-lyrics-panel__intro">
-          Genius&apos; API exposes song referents and annotations for a song. Those referents are the lyric fragments the app can render directly from the documented API.
-        </p>
-        {isReferentsLoading ? (
-          <p>Loading lyric referents...</p>
-        ) : isReferentsError ? (
-          <p>Lyric referents could not be loaded from Genius.</p>
-        ) : referents?.length ? (
-          <div className="song-lyrics-panel__list">
-            {referents.map((referent) => {
-              const annotation = referent.annotations?.[0];
-              const annotationText = annotation?.body?.plain || annotation?.body?.html || 'No annotation text available.';
-
-              return (
-                <article key={referent.id} className="song-lyrics-panel__item">
-                  <p className="song-lyrics-panel__fragment">{referent.fragment || 'Lyric fragment unavailable.'}</p>
-                  <p className="song-lyrics-panel__annotation">{annotationText}</p>
-                </article>
-              );
-            })}
+        <h2>Full Lyrics</h2>
+        {isLyricsLoading ? (
+          <p>Loading lyrics...</p>
+        ) : isLyricsError ? (
+          <p>Lyrics could not be loaded.</p>
+        ) : lyrics ? (
+          <div className="song-lyrics-panel__lyrics">
+            <pre className="song-lyrics-panel__text">{lyrics}</pre>
           </div>
         ) : (
-          <p>No lyric referents were returned for this song.</p>
+          <p>No lyrics available for this song.</p>
         )}
       </section>
     </div>

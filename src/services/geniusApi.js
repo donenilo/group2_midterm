@@ -34,7 +34,16 @@ export const geniusApi = createApi({
       },
     }),
 
+    getLyrics: builder.query({
+      query: ({ artist, title }) => {
+        const encodedArtist = encodeURIComponent(artist);
+        const encodedTitle = encodeURIComponent(title);
+        return `https://api.lyrics.ovh/v1/${encodedArtist}/${encodedTitle}`;
+      },
+      transformResponse: (res) => res.lyrics || null,
+    }),
+
   }),
 });
 
-export const { useSearchSongsQuery, useGetSongByIdQuery, useGetSongReferentsQuery } = geniusApi;
+export const { useSearchSongsQuery, useGetSongByIdQuery, useGetSongReferentsQuery, useGetLyricsQuery } = geniusApi;
