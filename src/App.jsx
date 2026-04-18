@@ -7,7 +7,6 @@ import './App.css';
 function App() {
   return (
     <div className="app">
-      <h1>Lyrics App</h1>
       <Routes>
         <Route path="/" element={<Navigate to="/songs" replace />} />
         <Route path="/songs" element={<SongListPage />} />

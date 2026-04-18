@@ -6,7 +6,6 @@ function SongList() {
   const { songs, isLoading, isError, error, isEmpty, query } = useSearch();
   const status = error?.status;
 
-  if (!query.trim())  return <p>Search for a song or artist to get started.</p>;
   if (isLoading)      return <p>Loading...</p>;
   if (isError) {
     if (status === 401) {

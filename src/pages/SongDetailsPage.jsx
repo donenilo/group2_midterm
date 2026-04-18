@@ -1,92 +1,56 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useGetSongByIdQuery, useGetSongReferentsQuery, useGetLyricsQuery } from '../services/geniusApi';
+import { useParams, Link } from 'react-router-dom';
+import { useGetSongByIdQuery, useGetLyricsQuery } from '../services/geniusApi';
+import './SongPages.css';
 
 function SongDetailsPage() {
   const { songId } = useParams();
-  const { data: song, isLoading, isError } = useGetSongByIdQuery(songId, {
-    skip: !songId,
-  });
-  const {
-    data: referents,
-    isLoading: isReferentsLoading,
-    isError: isReferentsError,
-  } = useGetSongReferentsQuery(songId, {
-    skip: !songId,
-  });
+  const { data: song, isLoading: isSongLoading } = useGetSongByIdQuery(songId);
 
   const artistName = song?.primary_artist?.name || '';
   const songTitle = song?.title || '';
-  const { data: lyrics, isLoading: isLyricsLoading, isError: isLyricsError } = useGetLyricsQuery(
+
+  const { data: lyrics, isLoading: isLyricsLoading } = useGetLyricsQuery(
     { artist: artistName, title: songTitle },
     { skip: !artistName || !songTitle }
   );
 
-  if (!songId) {
-    return <p>Missing song id.</p>;
-  }
-
-  if (isLoading) {
-    return <p>Loading song details...</p>;
-  }
-
-  if (isError || !song) {
-    return (
-      <div className="song-details-page">
-        <p>Something went wrong while loading the song details.</p>
-        <Link to="/songs" className="song-details-page__back">
-          Back to results
-        </Link>
-      </div>
-    );
-  }
+  if (isSongLoading) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="song-details-page">
-      <Link to="/songs" className="song-details-page__back">
-        Back to results
-      </Link>
-
-      <article className="song-details-card">
-        <img
-          src={song.song_art_image_url || song.song_art_image_thumbnail_url}
-          alt={song.title}
-          className="song-details-card__image"
-        />
-
-        <div className="song-details-card__content">
-          <p className="auth-panel__eyebrow">Song details</p>
-          <h2>{song.full_title || song.title}</h2>
-          <p>{song.primary_artist?.name}</p>
-
-          <dl className="song-details-card__meta">
-            <div>
-              <dt>Release date</dt>
-              <dd>{song.release_date_for_display || song.release_date || 'Unavailable'}</dd>
-            </div>
-            <div>
-              <dt>Page views</dt>
-              <dd>{song.stats?.pageviews ?? 'Unavailable'}</dd>
-            </div>
-          </dl>
-        </div>
-      </article>
-
-      <section className="song-lyrics-panel" aria-label="Song lyrics">
-        <p className="auth-panel__eyebrow">Lyrics</p>
-        <h2>Full Lyrics</h2>
-        {isLyricsLoading ? (
-          <p>Loading lyrics...</p>
-        ) : isLyricsError ? (
-          <p>Lyrics could not be loaded.</p>
-        ) : lyrics ? (
-          <div className="song-lyrics-panel__lyrics">
-            <pre className="song-lyrics-panel__text">{lyrics}</pre>
+    <div className="details-page">
+      {/* HEADER FOR LYRICS PAGE */}
+      <header className="song-hero">
+        <div className="hero-container">
+          <div className="hero-artwork">
+            <img src={song.song_art_image_url} alt={song.title} />
           </div>
-        ) : (
-          <p>No lyrics available for this song.</p>
-        )}
-      </section>
+          <div className="hero-info">
+            <h1 className="hero-title">{song.title}</h1>
+            <h2 className="hero-artist">{song.primary_artist.name}</h2>
+            <div className="hero-meta">
+              <p>Produced by: {song.producer_artists?.map(p => p.name).join(', ') || 'N/A'}</p>
+              <p>Released: {song.release_date_for_display}</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* BG OF LYRICS */}
+      <main className="lyrics-container">
+        <nav className="lyrics-nav">
+          <Link to="/songs" className="back-link">← Back to Search</Link>
+        </nav>
+        
+        <div className="lyrics-content">
+          <h3 className="section-label">Lyrics</h3>
+          {isLyricsLoading ? (
+            <p>Fetching lyrics...</p>
+          ) : (
+            <pre className="lyrics-text">{lyrics || "Lyrics not found for this track."}</pre>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
