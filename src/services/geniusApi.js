@@ -23,7 +23,27 @@ export const geniusApi = createApi({
 
     getSongById: builder.query({
       query: (id) => `/songs/${id}`,
-      transformResponse: (res) => res.response.song,
+      transformResponse: (res) => {
+        const song = res.response.song;
+        // Extract video data from media array
+        let videoEmbed = song?.media?.find(m => m.type === 'video');
+        
+        // Convert YouTube watch URL to embed URL
+        if (videoEmbed?.url) {
+          const watchUrlMatch = videoEmbed.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+          if (watchUrlMatch && watchUrlMatch[1]) {
+            videoEmbed = {
+              ...videoEmbed,
+              url: `https://www.youtube.com/embed/${watchUrlMatch[1]}`
+            };
+          }
+        }
+        
+        return {
+          ...song,
+          videoEmbed: videoEmbed || null
+        };
+      },
     }),
 
     getSongReferents: builder.query({

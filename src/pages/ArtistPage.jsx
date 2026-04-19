@@ -52,7 +52,7 @@ function ArtistPage() {
     return dateB - dateA;
   });
 
-  const popularSongs = songs.slice(0, 20); // Top 20 songs
+  const popularSongs = songs.slice(0, 50); // Top 50 songs
 
   return (
     <div className="artist-page">
@@ -76,9 +76,7 @@ function ArtistPage() {
               <p className="artist-description">{artist.description.plain.substring(0, 300)}...</p>
             )}
             <div className="artist-stats">
-              <span className="stat-item">
-                📀 {albums.length} Albums
-              </span>
+              
               <span className="stat-item">
                 🎵 {songs.length} Songs
               </span>
@@ -152,11 +150,6 @@ function ArtistPage() {
                           <h4 className="song-title">{song.title}</h4>
                           {song.album && (
                             <p className="song-album">{song.album.name}</p>
-                          )}
-                          {song.stats?.pageviews && (
-                            <p className="song-views">
-                              {(song.stats.pageviews / 1000000).toFixed(1)}M views
-                            </p>
                           )}
                         </div>
                       </div>

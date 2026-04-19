@@ -4,12 +4,13 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
   color: #1a1a1a;
+  padding-top: 60px;
 }
 
 .artist-nav {
   padding: 1.5rem 2rem;
   background: rgba(255, 255, 255, 0.7);
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   z-index: 10;
   backdrop-filter: blur(10px);
@@ -48,15 +49,16 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
+  gap: 10rem;
   align-items: center;
 }
 
 .artist-image {
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   aspect-ratio: 1;
   border-radius: 1rem;
+  justify-self:end;
   object-fit: cover;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   animation: fadeInScale 0.6s ease;
@@ -66,7 +68,7 @@
 .artist-info {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  /* gap: 1.5rem; */
 }
 
 .artist-name {

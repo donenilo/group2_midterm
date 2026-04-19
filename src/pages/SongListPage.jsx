@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useSearch } from '../hooks/useSearch'; 
-import GeniusConnect from '../components/GeniusConnect';
 import SearchBar from '../components/SearchBar';
 import SongList from '../components/SongList';
 import './SongPages.css';
@@ -21,14 +20,6 @@ function SongListPage() {
   return (
     <main className={`home-wrapper ${hasSearched ? 'mode-results' : 'mode-landing'}`}>
       
-      <header className="main-header">
-        <Link to="/songs" onClick={() => window.location.reload()} className="logo-container">
-          <h2 className="logo-text">Lyricist</h2>
-        </Link>
-        <GeniusConnect />
-      </header>
-      
-
 
       <div className="main-content">
         {!hasSearched && (
