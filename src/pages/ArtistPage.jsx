@@ -1,0 +1,172 @@
+import React from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { useGetArtistByIdQuery, useGetArtistSongsQuery } from '../services/geniusApi';
+import './ArtistPage.css';
+
+function ArtistPage() {
+  const { artistId } = useParams();
+  const { data: artist, isLoading: isArtistLoading } = useGetArtistByIdQuery(artistId);
+  const { data: songs = [], isLoading: isSongsLoading } = useGetArtistSongsQuery(artistId);
+
+  if (isArtistLoading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner">Loading artist...</div>
+      </div>
+    );
+  }
+
+  if (!artist) {
+    return (
+      <div className="error-container">
+        <p>Artist not found</p>
+        <Link to="/songs" className="back-link">← Back to Search</Link>
+      </div>
+    );
+  }
+
+  // Group songs by album
+  const albumsSet = new Set();
+  const albumMap = new Map();
+
+  songs.forEach((song) => {
+    if (song.album) {
+      const albumId = song.album.id;
+      if (!albumMap.has(albumId)) {
+        albumMap.set(albumId, {
+          id: albumId,
+          name: song.album.name,
+          cover_art_url: song.album.cover_art_url,
+          release_date: song.album.release_date,
+          songs: []
+        });
+      }
+      albumMap.get(albumId).songs.push(song);
+    }
+  });
+
+  const albums = Array.from(albumMap.values());
+  const popularSongs = songs.slice(0, 20); // Top 20 songs
+
+  return (
+    <div className="artist-page">
+      <nav className="artist-nav">
+        <Link to="/songs" className="back-button">← Back to Search</Link>
+      </nav>
+
+      {/* Artist Header */}
+      <header className="artist-hero">
+        <div className="artist-header-content">
+          {artist.image_url && (
+            <img
+              src={artist.image_url}
+              alt={artist.name}
+              className="artist-image"
+            />
+          )}
+          <div className="artist-info">
+            <h1 className="artist-name">{artist.name}</h1>
+            {artist.description?.plain && (
+              <p className="artist-description">{artist.description.plain.substring(0, 300)}...</p>
+            )}
+            <div className="artist-stats">
+              <span className="stat-item">
+                📀 {albums.length} Albums
+              </span>
+              <span className="stat-item">
+                🎵 {songs.length} Songs
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="artist-main">
+        <div className="content-container">
+          {/* Albums Section */}
+          {albums.length > 0 && (
+            <section className="albums-section">
+              <h2 className="section-title">Albums</h2>
+              <div className="albums-grid">
+                {albums.map((album) => (
+                  <Link
+                    key={album.id}
+                    to={`/albums/${album.id}`}
+                    className="album-card"
+                  >
+                    {album.cover_art_url && (
+                      <img
+                        src={album.cover_art_url}
+                        alt={album.name}
+                        className="album-cover"
+                      />
+                    )}
+                    <div className="album-info">
+                      <h3 className="album-name">{album.name}</h3>
+                      {album.release_date && (
+                        <p className="album-year">
+                          {new Date(album.release_date).getFullYear()}
+                        </p>
+                      )}
+                      <p className="album-track-count">
+                        {album.songs.length} tracks
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Popular Songs Section */}
+          {popularSongs.length > 0 && (
+            <section className="popular-section">
+              <h2 className="section-title">Popular Songs</h2>
+              {isSongsLoading ? (
+                <p className="loading-text">Loading songs...</p>
+              ) : (
+                <div className="songs-list">
+                  {popularSongs.map((song, index) => (
+                    <Link
+                      key={song.id}
+                      to={`/songs/${song.id}`}
+                      className="song-list-item"
+                    >
+                      <div className="song-rank">{index + 1}</div>
+                      <div className="song-card-small">
+                        {song.song_art_image_thumbnail_url && (
+                          <img
+                            src={song.song_art_image_thumbnail_url}
+                            alt={song.title}
+                            className="song-thumbnail"
+                          />
+                        )}
+                        <div className="song-details">
+                          <h4 className="song-title">{song.title}</h4>
+                          {song.album && (
+                            <p className="song-album">{song.album.name}</p>
+                          )}
+                          {song.stats?.pageviews && (
+                            <p className="song-views">
+                              {(song.stats.pageviews / 1000000).toFixed(1)}M views
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="song-play">
+                        <span>▶</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </section>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default ArtistPage;

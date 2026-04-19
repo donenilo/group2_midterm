@@ -27,7 +27,20 @@ function SongDetailsPage() {
           </div>
           <div className="hero-info">
             <h1 className="hero-title">{song.title}</h1>
-            <h2 className="hero-artist">{song.primary_artist.name}</h2>
+            <Link 
+              to={`/artists/${song.primary_artist.id}`}
+              className="hero-artist-link"
+            >
+              🎤 {song.primary_artist.name}
+            </Link>
+            {song.album && (
+              <Link 
+                to={`/albums/${song.album.id}`}
+                className="hero-album-link"
+              >
+                📀 {song.album.name}
+              </Link>
+            )}
             <div className="hero-meta">
               <p>Produced by: {song.producer_artists?.map(p => p.name).join(', ') || 'N/A'}</p>
               <p>Released: {song.release_date_for_display}</p>

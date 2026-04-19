@@ -24,7 +24,13 @@ function SongList() {
             <img src={song.song_art_image_thumbnail_url} alt={song.title} />
             <div>
               <p className="song-title">{song.full_title}</p>
-              <p className="song-artist">{song.primary_artist.name}</p>
+              <Link 
+                to={`/artists/${song.primary_artist.id}`}
+                className="song-artist-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {song.primary_artist.name}
+              </Link>
             </div>
           </Link>
         </li>

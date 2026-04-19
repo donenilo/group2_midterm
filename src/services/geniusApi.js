@@ -43,7 +43,42 @@ export const geniusApi = createApi({
       transformResponse: (res) => res.lyrics || null,
     }),
 
+    getArtistById: builder.query({
+      query: (id) => `/artists/${id}`,
+      transformResponse: (res) => res.response.artist,
+    }),
+
+    getArtistSongs: builder.query({
+      query: (id) => `/artists/${id}/songs?per_page=50&sort=popularity`,
+      transformResponse: (res) => {
+        const songs = res?.response?.songs;
+        return Array.isArray(songs) ? songs : [];
+      },
+    }),
+
+    getAlbumById: builder.query({
+      query: (id) => `/albums/${id}`,
+      transformResponse: (res) => res.response.album,
+    }),
+
+    getAlbumSongs: builder.query({
+      query: (id) => `/albums/${id}/songs?per_page=50`,
+      transformResponse: (res) => {
+        const songs = res?.response?.songs;
+        return Array.isArray(songs) ? songs : [];
+      },
+    }),
+
   }),
 });
 
-export const { useSearchSongsQuery, useGetSongByIdQuery, useGetSongReferentsQuery, useGetLyricsQuery } = geniusApi;
+export const { 
+  useSearchSongsQuery, 
+  useGetSongByIdQuery, 
+  useGetSongReferentsQuery, 
+  useGetLyricsQuery,
+  useGetArtistByIdQuery,
+  useGetArtistSongsQuery,
+  useGetAlbumByIdQuery,
+  useGetAlbumSongsQuery
+} = geniusApi;
