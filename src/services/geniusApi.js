@@ -56,19 +56,6 @@ export const geniusApi = createApi({
       },
     }),
 
-    getAlbumById: builder.query({
-      query: (id) => `/albums/${id}`,
-      transformResponse: (res) => res.response.album,
-    }),
-
-    getAlbumSongs: builder.query({
-      query: (id) => `/albums/${id}/songs?per_page=50`,
-      transformResponse: (res) => {
-        const songs = res?.response?.songs;
-        return Array.isArray(songs) ? songs : [];
-      },
-    }),
-
   }),
 });
 
@@ -78,7 +65,5 @@ export const {
   useGetSongReferentsQuery, 
   useGetLyricsQuery,
   useGetArtistByIdQuery,
-  useGetArtistSongsQuery,
-  useGetAlbumByIdQuery,
-  useGetAlbumSongsQuery
+  useGetArtistSongsQuery
 } = geniusApi;

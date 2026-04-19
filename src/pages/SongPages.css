@@ -270,8 +270,7 @@ body {
   letter-spacing: -1.5px;
 }
 
-.hero-artist-link,
-.hero-album-link {
+.hero-artist-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -289,11 +288,26 @@ body {
   cursor: pointer;
 }
 
-.hero-artist-link:hover,
-.hero-album-link:hover {
+.hero-artist-link:hover {
   background: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.6);
   transform: translateY(-2px);
+}
+
+.hero-album-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 0;
 }
 
 .lyrics-container {

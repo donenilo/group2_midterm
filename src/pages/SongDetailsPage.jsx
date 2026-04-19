@@ -34,12 +34,9 @@ function SongDetailsPage() {
               🎤 {song.primary_artist.name}
             </Link>
             {song.album && (
-              <Link 
-                to={`/albums/${song.album.id}`}
-                className="hero-album-link"
-              >
+              <p className="hero-album-info">
                 📀 {song.album.name}
-              </Link>
+              </p>
             )}
             <div className="hero-meta">
               <p>Produced by: {song.producer_artists?.map(p => p.name).join(', ') || 'N/A'}</p>

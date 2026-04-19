@@ -25,27 +25,33 @@ function ArtistPage() {
     );
   }
 
-  // Group songs by album
-  const albumsSet = new Set();
+  // Improved album grouping: deduplicate and sort by release date
   const albumMap = new Map();
 
   songs.forEach((song) => {
     if (song.album) {
       const albumId = song.album.id;
+      // Only keep first occurrence of each album (newer albums first in API response)
       if (!albumMap.has(albumId)) {
         albumMap.set(albumId, {
           id: albumId,
           name: song.album.name,
           cover_art_url: song.album.cover_art_url,
           release_date: song.album.release_date,
-          songs: []
+          artist: song.album.artist || song.primary_artist.name,
+          track_count: song.album.track_count || 1
         });
       }
-      albumMap.get(albumId).songs.push(song);
     }
   });
 
-  const albums = Array.from(albumMap.values());
+  // Sort albums by release date (newest first)
+  const albums = Array.from(albumMap.values()).sort((a, b) => {
+    const dateA = new Date(a.release_date || 0).getTime();
+    const dateB = new Date(b.release_date || 0).getTime();
+    return dateB - dateA;
+  });
+
   const popularSongs = songs.slice(0, 20); // Top 20 songs
 
   return (
