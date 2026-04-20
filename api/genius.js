@@ -1,10 +1,25 @@
+import { createHash } from 'node:crypto';
+
 export default async function handler(req, res) {
   const { q, id, path, per_page, page } = req.query;
+  const debugEnabled = String(req.query?.debug ?? '') === '1';
 
   const geniusToken = (process.env.GENIUS_ACCESS_TOKEN || '')
     .trim()
     .replace(/^['\"]|['\"]$/g, '');
   const baseUrl = 'https://api.genius.com';
+  const debugInfo = debugEnabled
+    ? {
+      handler: 'api/genius.js',
+      tokenPresent: Boolean(geniusToken),
+      tokenLength: geniusToken.length,
+      tokenFingerprint: geniusToken
+        ? createHash('sha256').update(geniusToken).digest('hex').slice(0, 12)
+        : null,
+      vercelEnv: process.env.VERCEL_ENV ?? null,
+      nodeEnv: process.env.NODE_ENV ?? null,
+    }
+    : null;
 
   let url;
   if (id) {
@@ -22,8 +37,13 @@ export default async function handler(req, res) {
   if (!geniusToken) {
     res.status(500).json({
       error: 'GENIUS_ACCESS_TOKEN is not configured on this deployment.',
+      ...(debugEnabled ? { _debug: debugInfo } : {}),
     });
     return;
+  }
+
+  if (debugEnabled && debugInfo) {
+    debugInfo.targetUrl = url;
   }
 
   try {
@@ -36,10 +56,18 @@ export default async function handler(req, res) {
       ? await response.json()
       : { error: await response.text() };
 
-    res.status(response.status).json(payload);
+    const responseBody = debugEnabled
+      ? {
+        ...(payload && typeof payload === 'object' && !Array.isArray(payload) ? payload : { data: payload }),
+        _debug: debugInfo,
+      }
+      : payload;
+
+    res.status(response.status).json(responseBody);
   } catch (error) {
     res.status(502).json({
       error: error instanceof Error ? error.message : 'Failed to contact Genius API.',
+      ...(debugEnabled ? { _debug: debugInfo } : {}),
     });
   }
 }
