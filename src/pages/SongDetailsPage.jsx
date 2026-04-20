@@ -5,7 +5,12 @@ import './SongPages.css';
 
 function SongDetailsPage() {
   const { songId } = useParams();
-  const { data: song, isLoading: isSongLoading } = useGetSongByIdQuery(songId);
+  const {
+    data: song,
+    isLoading: isSongLoading,
+    isError: isSongError,
+    error: songError,
+  } = useGetSongByIdQuery(songId, { skip: !songId });
 
   const artistName = song?.primary_artist?.name || '';
   const songTitle = song?.title || '';
@@ -21,6 +26,25 @@ function SongDetailsPage() {
         <span className="page-loader__ring" aria-hidden="true" />
         <p className="page-loader__text">Preparing song details...</p>
       </div>
+    );
+  }
+
+  if (isSongError || !song) {
+    const status = songError?.status;
+    const errorText =
+      status === 404
+        ? 'Song details were not found. Please go back and try a different result.'
+        : 'Unable to load song details right now. Please try again.';
+
+    return (
+      <main className="details-page">
+        <section className="lyrics-container" aria-live="polite">
+          <nav className="lyrics-nav">
+            <Link to="/songs" className="back-link">← Back to Search</Link>
+          </nav>
+          <p className="results-status-message">{errorText}</p>
+        </section>
+      </main>
     );
   }
 
