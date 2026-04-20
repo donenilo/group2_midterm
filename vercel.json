@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/genius/:path*",
-      "destination": "/api/genius?path=/:path*"
-    }
-  ]
-}
