@@ -103,26 +103,47 @@ export const geniusApi = createApi({
     }),
 
     getSongById: builder.query({
-      query: (id) => `/songs/${id}`,
-      transformResponse: (res) => {
-        const song = res.response.song;
-        // Extract video data from media array
-        let videoEmbed = song?.media?.find(m => m.type === 'video');
-        
-        // Convert YouTube watch URL to embed URL
+      async queryFn(id, _api, _extraOptions, fetchWithBQ) {
+        if (!id) {
+          return {
+            error: { status: "CUSTOM_ERROR", error: "Missing song id." },
+          };
+        }
+
+        // Try the catch-all API route first, then fallback to the query-param route.
+        // This prevents production breakage if /api/genius/[...geniusPath] is unavailable.
+        let response = await fetchWithBQ(`/songs/${id}`);
+        if (response.error?.status === 404) {
+          response = await fetchWithBQ(`?id=${encodeURIComponent(id)}`);
+        }
+
+        if (response.error) {
+          return { error: response.error };
+        }
+
+        const song = response?.data?.response?.song;
+        if (!song) {
+          return {
+            error: { status: 404, data: { message: "Song not found." } },
+          };
+        }
+
+        let videoEmbed = song?.media?.find((m) => m.type === "video");
         if (videoEmbed?.url) {
           const watchUrlMatch = videoEmbed.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
           if (watchUrlMatch && watchUrlMatch[1]) {
             videoEmbed = {
               ...videoEmbed,
-              url: `https://www.youtube.com/embed/${watchUrlMatch[1]}`
+              url: `https://www.youtube.com/embed/${watchUrlMatch[1]}`,
             };
           }
         }
-        
+
         return {
-          ...song,
-          videoEmbed: videoEmbed || null
+          data: {
+            ...song,
+            videoEmbed: videoEmbed || null,
+          },
         };
       },
     }),
