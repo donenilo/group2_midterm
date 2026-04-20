@@ -10,6 +10,7 @@ export default async function handler(req, res) {
   const baseUrl = 'https://api.genius.com';
   const debugInfo = debugEnabled
     ? {
+      handler: 'api/genius.js',
       tokenPresent: Boolean(geniusToken),
       tokenLength: geniusToken.length,
       tokenFingerprint: geniusToken
@@ -39,6 +40,10 @@ export default async function handler(req, res) {
       ...(debugEnabled ? { _debug: debugInfo } : {}),
     });
     return;
+  }
+
+  if (debugEnabled && debugInfo) {
+    debugInfo.targetUrl = url;
   }
 
   try {

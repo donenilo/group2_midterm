@@ -8,6 +8,7 @@ export default async function handler(req, res) {
   const baseUrl = 'https://api.genius.com';
   const debugInfo = debugEnabled
     ? {
+      handler: 'api/genius/[...geniusPath].js',
       tokenPresent: Boolean(geniusToken),
       tokenLength: geniusToken.length,
       tokenFingerprint: geniusToken
@@ -48,6 +49,10 @@ export default async function handler(req, res) {
 
   const queryString = params.toString();
   const targetUrl = `${baseUrl}${endpointPath}${queryString ? `?${queryString}` : ''}`;
+
+  if (debugEnabled && debugInfo) {
+    debugInfo.targetUrl = targetUrl;
+  }
 
   try {
     const response = await fetch(targetUrl, {
