@@ -37,6 +37,12 @@ function SongList() {
     if (status === 401) {
       return <p className="results-status-message">Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.</p>;
     }
+    if (status === 403) {
+      return <p className="results-status-message">Genius API forbidden. Verify GENIUS_ACCESS_TOKEN is a valid Genius access token and not a client ID.</p>;
+    }
+    if (status === 404) {
+      return <p className="results-status-message">API route not found. Ensure Vercel deployed the latest commit with API proxy routing.</p>;
+    }
     return <p className="results-status-message">Something went wrong. Please try again.</p>;
   }
   if (isEmpty) return <p className="results-status-message">No results for "{query}".</p>;

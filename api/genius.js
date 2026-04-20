@@ -29,8 +29,12 @@ export default async function handler(req, res) {
       headers: { Authorization: `Bearer ${geniusToken}` },
     });
 
-    const data = await response.json();
-    res.status(response.status).json(data);
+    const contentType = response.headers.get('content-type') || '';
+    const payload = contentType.includes('application/json')
+      ? await response.json()
+      : { error: await response.text() };
+
+    res.status(response.status).json(payload);
   } catch (error) {
     res.status(502).json({
       error: error instanceof Error ? error.message : 'Failed to contact Genius API.',
