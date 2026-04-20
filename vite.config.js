@@ -12,7 +12,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const geniusToken = (env.GENIUS_ACCESS_TOKEN || '').trim()
+  const serverToken = (env.GENIUS_ACCESS_TOKEN || '').trim()
+  const fallbackClientToken = (env.VITE_GENIUS_ACCESS_TOKEN || '').trim()
+  const isPlaceholderToken = /^(your_genius_access_token_here|changeme)$/i.test(serverToken)
+  const geniusToken = (!serverToken || isPlaceholderToken) ? fallbackClientToken : serverToken
 
   return {
     plugins: [react()],

@@ -11,9 +11,11 @@ function SongListPage() {
   const hasSearched = searchQuery.trim().length > 0;
   
   // Para sa trends
-  const { setQuery, submitSearch } = useSearch();
+  const { setQuery, submitSearch, setTag, setSort } = useSearch();
 
   const handleTrendingClick = (artist) => {
+    setTag('');
+    setSort('');
     setQuery(artist);
     submitSearch(artist);
   };

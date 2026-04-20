@@ -16,8 +16,12 @@ export const geniusApi = createApi({
         try {
           api.dispatch(setLoadingMoreResults(false));
 
-          const searchText = [q, tag].filter(Boolean).join(" ");
-          if (!searchText.trim()) return { data: [] };
+          const searchText = [q, tag]
+            .filter(Boolean)
+            .join(" ")
+            .replace(/\s+/g, " ")
+            .trim();
+          if (!searchText) return { data: [] };
 
           const buildSearchPath = (page) => {
             const params = new URLSearchParams();
