@@ -46,9 +46,11 @@ function SongListPage() {
           )}
         </section>
 
-        <section className="results-section mt-5">
-          <SongList />
-        </section>
+        {hasSearched && (
+          <section className="results-section mt-5">
+            <SongList />
+          </section>
+        )}
       </div>
     </main>
   );

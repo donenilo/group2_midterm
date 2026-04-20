@@ -15,7 +15,14 @@ function SongDetailsPage() {
     { skip: !artistName || !songTitle }
   );
 
-  if (isSongLoading) return <div className="loading">Loading...</div>;
+  if (isSongLoading) {
+    return (
+      <div className="page-loader" role="status" aria-live="polite">
+        <span className="page-loader__ring" aria-hidden="true" />
+        <p className="page-loader__text">Preparing song details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="details-page">
@@ -72,7 +79,12 @@ function SongDetailsPage() {
           <div className="lyrics-content">
             <h3 className="section-label">Lyrics</h3>
             {isLyricsLoading ? (
-              <p>Fetching lyrics...</p>
+              <div className="lyrics-loading" role="status" aria-live="polite">
+                <p className="lyrics-loading__label">Fetching lyrics...</p>
+                <div className="lyrics-loading__line skeleton-shimmer" />
+                <div className="lyrics-loading__line skeleton-shimmer" />
+                <div className="lyrics-loading__line lyrics-loading__line--short skeleton-shimmer" />
+              </div>
             ) : (
               <pre className="lyrics-text">{lyrics || "Lyrics not found for this track."}</pre>
             )}

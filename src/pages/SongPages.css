@@ -17,7 +17,6 @@ body {
 .mode-landing {
   background-size: cover;
   height: calc(100vh - 70px);
-  margin-top: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,8 +79,8 @@ body {
   font-size: 8rem; 
   font-weight: 950; 
   color: #111;
-  margin-bottom: 0.5rem;
-  letter-spacing: -5px; 
+  margin-bottom: 1.5rem;
+  letter-spacing: -2px; 
   line-height: 1;
 }
 
@@ -89,6 +88,7 @@ body {
 .mode-results .hero-brand {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  letter-spacing: -1px;
 }
 
 .hero-subtitle {
@@ -124,7 +124,7 @@ body {
   background: white;
   border: 1px solid #ffffff; 
   border-radius: 60px;
-  padding: 12px 35px;
+  padding: 10px 25px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
@@ -246,7 +246,7 @@ body {
 }
 
 .results-section p {
-  font-size: 0.85rem;
+  font-size: 0.80rem;
   color: #666;
   margin: 0;
 }
@@ -331,10 +331,12 @@ body {
 }
 
 .hero-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
+  color: #fff;
   margin: 0;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.2px;  
+  line-height: normal;
   width: 100%;
 }
 
@@ -422,13 +424,8 @@ body {
 }
 
 .lyrics-content {
-  /* background: linear-gradient(135deg, rgba(0, 102, 255, 0.03) 0%, rgba(200, 100, 200, 0.03) 100%); */
-  /*
-* Created with https://www.css-gradient.com
-* Gradient link: https://www.css-gradient.com/?c1=74bef2&c2=b0bbf7&gt=r&gd=dbb
-*/
-background: #81c4f5;
-background: radial-gradient(at center top, #81c3f1, #bfc8f8);
+  background: #81c4f5;
+  background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   border: 1px solid rgba(0, 102, 255, 0.1);
   border-radius: 12px;
   padding: 40px;
@@ -522,6 +519,146 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   text-decoration: underline;
 }
 
+/* Loading Effects */
+.songs-loading {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.songs-loading__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.songs-loading__pulse {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0066ff;
+  animation: loadingPulse 1.2s ease-in-out infinite;
+}
+
+.songs-loading__title {
+  margin: 0;
+  color: #1f3f6b;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.song-list-skeleton {
+  pointer-events: none;
+}
+
+.song-item-skeleton {
+  opacity: 1;
+}
+
+.song-item-skeleton__media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.song-item-skeleton__line {
+  height: 12px;
+  border-radius: 999px;
+  margin-top: 10px;
+}
+
+.song-item-skeleton__line--short {
+  width: 62%;
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: #dbe5f2;
+}
+
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.65) 50%, transparent 100%);
+  animation: shimmerMove 1.25s linear infinite;
+}
+
+.page-loader {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  align-content: center;
+  background: radial-gradient(circle at center, rgba(129, 195, 241, 0.25) 0%, rgba(191, 200, 248, 0.18) 45%, transparent 75%);
+}
+
+.page-loader__ring {
+  width: 44px;
+  height: 44px;
+  border: 4px solid rgba(0, 102, 255, 0.2);
+  border-top-color: #0066ff;
+  border-radius: 50%;
+  animation: spinLoader 0.9s linear infinite;
+}
+
+.page-loader__text {
+  margin: 0;
+  color: #1a3a52;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.lyrics-loading {
+  margin-top: 10px;
+}
+
+.lyrics-loading__label {
+  margin: 0 0 14px;
+  color: #2d4f72;
+  font-weight: 600;
+}
+
+.lyrics-loading__line {
+  height: 14px;
+  border-radius: 999px;
+  margin: 0 0 10px;
+}
+
+.lyrics-loading__line--short {
+  width: 72%;
+}
+
+@keyframes shimmerMove {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes loadingPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes spinLoader {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* ============================================ */
 /* !!!    RESPONSIVE DESIGN - MOBILE    !!! */
 /* ============================================ */
@@ -541,17 +678,22 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   }
 
   .hero-brand {
-    font-size: 3.5rem;
+    font-size: 4rem;
     letter-spacing: -2px;
+    margin-bottom: 1rem;
   }
 
-  .hero-subtitle {
-    font-size: 1rem;
+  .landing-hero {
     margin-bottom: 1.5rem;
+  } 
+
+  .hero-subtitle {
+    font-size: 1rem;  
+    margin-bottom: 0.5rem;
   }
 
   .search-pill {
-    padding: 10px 20px;
+    padding: 5px 10px;
   }
 
   .search-input {
@@ -565,11 +707,11 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
 
   .featured-trending {
     margin-top: 1rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .trending-tag {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin: 0 6px;
     padding: 0.25rem 0;
   }
@@ -582,6 +724,7 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
 
   .song-item__link img {
     margin-bottom: 8px;
+    width: 80%;
   }
 
   .song-title {
@@ -768,7 +911,7 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   }
 
   .search-pill {
-    padding: 11px 25px;
+    padding: 8px 20px;
   }
 
   .search-input {
@@ -802,7 +945,7 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   }
 
   .hero-title {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 
   .hero-media {
@@ -913,17 +1056,32 @@ background: radial-gradient(at center top, #81c3f1, #bfc8f8);
   }
 
   .mode-landing {
-    min-height: auto;
-    padding-top: 40px;
+    min-height: calc(100dvh - 60px);
+    padding-top: 24px;
+    padding-bottom: 24px;
+    justify-content: center;
+  }
+
+  .mode-results .landing-hero {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .search-section {
     max-width: 100%;
     padding: 0 10px;
+    min-height: 56px;
+    justify-content: center;
+  }
+
+  .results-section {
+    margin-top: 1.25rem !important;
   }
 
   .results-section ul {
     max-width: 100%;
     padding: 20px 10px;
+     grid-template-columns: repeat(2, 1fr);
+     margin-left: 3rem;
   }
 }

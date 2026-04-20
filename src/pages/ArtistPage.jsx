@@ -7,11 +7,13 @@ function ArtistPage() {
   const { artistId } = useParams();
   const { data: artist, isLoading: isArtistLoading } = useGetArtistByIdQuery(artistId);
   const { data: songs = [], isLoading: isSongsLoading } = useGetArtistSongsQuery(artistId);
+  const songSkeletonRows = Array.from({ length: 6 }, (_, index) => index);
 
   if (isArtistLoading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner">Loading artist...</div>
+      <div className="loading-container" role="status" aria-live="polite">
+        <div className="loading-spinner" aria-hidden="true" />
+        <p className="loading-spinner-text">Loading artist profile...</p>
       </div>
     );
   }
@@ -128,7 +130,21 @@ function ArtistPage() {
             <section className="popular-section">
               <h2 className="section-title">Popular Songs</h2>
               {isSongsLoading ? (
-                <p className="loading-text">Loading songs...</p>
+                <div className="loading-text" role="status" aria-live="polite">
+                  <p className="loading-text__label">Loading songs...</p>
+                  <div className="artist-song-skeleton-list" aria-hidden="true">
+                    {songSkeletonRows.map((row) => (
+                      <div key={row} className="artist-song-skeleton-item">
+                        <div className="artist-song-skeleton-rank artist-skeleton-shimmer" />
+                        <div className="artist-song-skeleton-media artist-skeleton-shimmer" />
+                        <div className="artist-song-skeleton-content">
+                          <div className="artist-song-skeleton-line artist-skeleton-shimmer" />
+                          <div className="artist-song-skeleton-line artist-song-skeleton-line--short artist-skeleton-shimmer" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ) : (
                 <div className="songs-list">
                   {popularSongs.map((song, index) => (
