@@ -27,17 +27,24 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { geniusPath, ...query } = req.query;
-  const pathSegments = Array.isArray(geniusPath)
-    ? geniusPath
-    : geniusPath
-      ? [geniusPath]
+  const rawPath = req.query?.geniusPath
+    ?? req.query?.['...geniusPath']
+    ?? req.query?.['[...geniusPath]'];
+
+  const pathSegments = Array.isArray(rawPath)
+    ? rawPath
+    : rawPath
+      ? [rawPath]
       : [];
 
   const endpointPath = `/${pathSegments.join('/')}`;
   const params = new URLSearchParams();
 
-  Object.entries(query).forEach(([key, value]) => {
+  Object.entries(req.query || {}).forEach(([key, value]) => {
+    if (key === 'geniusPath' || key === '...geniusPath' || key === '[...geniusPath]' || key === 'debug') {
+      return;
+    }
+
     if (Array.isArray(value)) {
       value.forEach((v) => params.append(key, String(v)));
       return;
