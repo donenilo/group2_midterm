@@ -1111,3 +1111,98 @@ body {
      margin-left: 3rem;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #e5ecf6;
+  }
+
+  .main-header {
+    background: rgba(12, 16, 23, 0.85);
+    border-bottom-color: rgba(125, 144, 170, 0.22);
+  }
+
+  .logo-text,
+  .hero-brand,
+  .song-title {
+    color: #f5f8ff;
+  }
+
+  .hero-subtitle,
+  .results-section p,
+  .songs-loading__title,
+  .page-loader__text,
+  .lyrics-loading__label {
+    color: #bfccdf;
+  }
+
+  .search-pill {
+    background: rgba(20, 26, 37, 0.9);
+    border-color: rgba(125, 144, 170, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .search-input {
+    color: #ecf2fb;
+  }
+
+  .search-input::placeholder {
+    color: #8f9eb4;
+  }
+
+  .details-page {
+    background: radial-gradient(circle at 20% 10%, rgba(82, 114, 158, 0.18) 0%, rgba(18, 21, 27, 0) 50%), radial-gradient(circle at 80% 90%, rgba(58, 86, 125, 0.12) 0%, rgba(18, 21, 27, 0) 45%), linear-gradient(160deg, #11161f 0%, #0c1118 100%);
+  }
+
+  .song-hero {
+    background: linear-gradient(155deg, #18273a 0%, #101b2b 55%, #0c121d 100%);
+    border: 1px solid rgba(125, 144, 170, 0.2);
+  }
+
+  .hero-artist-link {
+    background: rgba(216, 228, 245, 0.14);
+    border-color: rgba(216, 228, 245, 0.35);
+  }
+
+  .hero-meta p {
+    color: rgba(226, 236, 250, 0.85);
+  }
+
+  .lyrics-content {
+    background: radial-gradient(circle at center top, #233249 0%, #1a2739 55%, #131c2a 100%);
+    border-color: rgba(125, 144, 170, 0.28);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .section-label,
+  .song-artist-link,
+  .back-link {
+    color: #7ab0ff;
+  }
+
+  .song-artist-link:hover,
+  .back-link:hover {
+    color: #a1c9ff;
+  }
+
+  .lyrics-text {
+    color: #f0f5ff;
+  }
+
+  .song-item__link img,
+  .results-section img {
+    background-color: rgba(23, 31, 44, 0.85);
+  }
+
+  .page-loader {
+    background: radial-gradient(circle at center, rgba(61, 95, 143, 0.25) 0%, rgba(22, 31, 46, 0.18) 45%, transparent 75%);
+  }
+
+  .skeleton-shimmer {
+    background: #2a3444;
+  }
+
+  .skeleton-shimmer::after {
+    background: linear-gradient(90deg, transparent 0%, rgba(221, 232, 248, 0.28) 50%, transparent 100%);
+  }
+}

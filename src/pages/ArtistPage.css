@@ -698,6 +698,91 @@
     margin-bottom: 0.5rem;
   }
 
+
+@media (prefers-color-scheme: dark) {
+  .artist-page,
+  .loading-container {
+    background: radial-gradient(circle at 20% 10%, rgba(82, 114, 158, 0.18) 0%, rgba(18, 21, 27, 0) 50%), radial-gradient(circle at 80% 90%, rgba(58, 86, 125, 0.12) 0%, rgba(18, 21, 27, 0) 45%), linear-gradient(160deg, #11161f 0%, #0c1118 100%);
+    color: #e5ecf6;
+  }
+
+  .artist-nav {
+    border-bottom-color: rgba(125, 144, 170, 0.2);
+  }
+
+  .back-button {
+    background: rgba(83, 147, 255, 0.14);
+    border-color: rgba(132, 177, 255, 0.45);
+    color: #9cc5ff;
+  }
+
+  .back-button:hover {
+    background: rgba(83, 147, 255, 0.2);
+  }
+
+  .artist-hero {
+    background: linear-gradient(180deg, rgba(32, 46, 67, 0.82) 0%, rgba(16, 21, 30, 0.08) 100%);
+    color: #f2f6fe;
+  }
+
+  .artist-name,
+  .section-title,
+  .album-name,
+  .song-title,
+  .error-container p {
+    color: #f5f8ff;
+  }
+
+  .artist-description,
+  .album-year,
+  .song-album,
+  .loading-spinner-text,
+  .loading-text,
+  .loading-text__label {
+    color: #bfccdf;
+  }
+
+  .artist-stats,
+  .song-views {
+    color: #ced9ea;
+  }
+
+  .album-card,
+  .song-list-item,
+  .artist-song-skeleton-item {
+    background: rgba(20, 26, 37, 0.9);
+    border-color: rgba(125, 144, 170, 0.22);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+    color: #eaf1fc;
+  }
+
+  .song-list-item:hover,
+  .album-card:hover {
+    background: rgba(27, 36, 51, 0.95);
+    border-color: rgba(132, 177, 255, 0.42);
+  }
+
+  .song-rank {
+    color: #9eb0ca;
+  }
+
+  .song-play {
+    background: rgba(132, 177, 255, 0.15);
+    color: #9cc5ff;
+  }
+
+  .song-list-item:hover .song-play {
+    background: rgba(132, 177, 255, 0.24);
+  }
+
+  .artist-skeleton-shimmer {
+    background: #2a3444;
+  }
+
+  .artist-skeleton-shimmer::after {
+    background: linear-gradient(90deg, transparent 0%, rgba(221, 232, 248, 0.28) 50%, transparent 100%);
+  }
+}
   .artist-description {
     font-size: 0.85rem;
     max-height: 40px;
