@@ -246,18 +246,18 @@ body {
 }
 
 .loading-more-results {
-  max-width: 1100px;
+  width: min(1100px, calc(100% - 40px));
   margin: 6px auto 0;
-  padding: 0 20px;
+  padding: 0;
   color: #5b6770;
   font-size: 0.9rem;
   text-align: center;
 }
 
 .results-status-message {
-  max-width: 1100px;
+  width: min(1100px, calc(100% - 40px));
   margin: 12px auto 0;
-  padding: 0 20px;
+  padding: 0;
   text-align: center;
 }
 

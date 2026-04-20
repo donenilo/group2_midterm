@@ -6,12 +6,13 @@ import Pagination from './Pagination';
 function SongList() {
   const {
     songs, isLoading, isLoadingMoreResults, isError, error, isEmpty, query,
-    currentPage, totalPages, showPagination, totalResults,
+    currentPage, totalPages, showPagination,
     setCurrentPage
   } = useSearch();
 
   const status = error?.status;
   const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
+  let statusMessage = null;
 
   if (isLoading) {
     return (
@@ -35,17 +36,17 @@ function SongList() {
   }
   if (isError) {
     if (status === 401) {
-      return <p className="results-status-message">Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.</p>;
+      statusMessage = 'Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.';
+    } else if (status === 403) {
+      statusMessage = 'Genius API forbidden. Verify GENIUS_ACCESS_TOKEN is a valid Genius access token and not a client ID.';
+    } else if (status === 404) {
+      statusMessage = 'API route not found. Ensure Vercel deployed the latest commit with API proxy routing.';
+    } else {
+      statusMessage = `Something went wrong (status: ${status ?? 'unknown'}). Please try again.`;
     }
-    if (status === 403) {
-      return <p className="results-status-message">Genius API forbidden. Verify GENIUS_ACCESS_TOKEN is a valid Genius access token and not a client ID.</p>;
-    }
-    if (status === 404) {
-      return <p className="results-status-message">API route not found. Ensure Vercel deployed the latest commit with API proxy routing.</p>;
-    }
-    return <p className="results-status-message">Something went wrong. Please try again.</p>;
+  } else if (isEmpty) {
+    statusMessage = `No results for "${query}".`;
   }
-  if (isEmpty) return <p className="results-status-message">No results for "{query}".</p>;
 
   return (
     <div>
@@ -58,39 +59,47 @@ function SongList() {
         />
       )}
 
-      {isLoadingMoreResults && (
-        <p className="loading-more-results" role="status" aria-live="polite">
-          Loading more results...
+      {statusMessage ? (
+        <p className="results-status-message" role="status" aria-live="polite">
+          {statusMessage}
         </p>
-      )}
+      ) : (
+        <>
+          {isLoadingMoreResults && (
+            <p className="loading-more-results" role="status" aria-live="polite">
+              Loading more results...
+            </p>
+          )}
 
-      <ul className="song-list">
-        {songs.map((song) => (
-          <li key={song.id} className="song-item">
-            <Link to={`/songs/${song.id}`} className="song-item__link">
-              <img src={song.song_art_image_thumbnail_url} alt={song.title} />
-              <div>
-                <p className="song-title">{song.full_title}</p>
-                <Link
-                  to={`/artists/${song.primary_artist.id}`}
-                  className="song-artist-link"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {song.primary_artist.name}
+          <ul className="song-list">
+            {songs.map((song) => (
+              <li key={song.id} className="song-item">
+                <Link to={`/songs/${song.id}`} className="song-item__link">
+                  <img src={song.song_art_image_thumbnail_url} alt={song.title} />
+                  <div>
+                    <p className="song-title">{song.full_title}</p>
+                    <Link
+                      to={`/artists/${song.primary_artist.id}`}
+                      className="song-artist-link"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {song.primary_artist.name}
+                    </Link>
+                  </div>
                 </Link>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+              </li>
+            ))}
+          </ul>
 
-      {/* Pagination BOTTOM — only shows if results exceed 20 */}
-      {showPagination && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+          {/* Pagination BOTTOM — only shows if results exceed 20 */}
+          {showPagination && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </>
       )}
     </div>
   );
