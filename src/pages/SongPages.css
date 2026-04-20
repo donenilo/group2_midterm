@@ -251,6 +251,14 @@ body {
   padding: 0 20px;
   color: #5b6770;
   font-size: 0.9rem;
+  text-align: center;
+}
+
+.results-status-message {
+  max-width: 1100px;
+  margin: 12px auto 0;
+  padding: 0 20px;
+  text-align: center;
 }
 
 .results-section p {
@@ -919,7 +927,17 @@ body {
   }
 
   .search-pill {
-    padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: white;
+  border: 1px solid #ffffff; 
+  border-radius: 60px;
+  padding: 10px 25px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
   }
 
   .search-input {

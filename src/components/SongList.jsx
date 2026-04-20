@@ -34,10 +34,12 @@ function SongList() {
     );
   }
   if (isError) {
-    if (status === 401) return <p>Genius API unauthorized. Set GENIUS_ACCESS_TOKEN or VITE_GENIUS_ACCESS_TOKEN and restart dev server.</p>;
-    return <p>Something went wrong. Please try again.</p>;
+    if (status === 401) {
+      return <p className="results-status-message">Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.</p>;
+    }
+    return <p className="results-status-message">Something went wrong. Please try again.</p>;
   }
-  if (isEmpty) return <p>No results for "{query}".</p>;
+  if (isEmpty) return <p className="results-status-message">No results for "{query}".</p>;
 
   return (
     <div>
