@@ -7,7 +7,7 @@ import SongList from '../components/SongList';
 import './SongPages.css';
 
 function SongListPage() {
-  const searchQuery = useSelector((state) => state.search?.query || "");
+  const searchQuery = useSelector((state) => state.filters?.query || "");
   const hasSearched = searchQuery.trim().length > 0;
   
   // Para sa trends
@@ -22,12 +22,10 @@ function SongListPage() {
       
 
       <div className="main-content">
-        {!hasSearched && (
-          <div className="landing-hero text-center">
-            <h1 className="hero-brand">Lyricist</h1>
-            <p className="hero-subtitle">Find your favorite song lyrics in seconds.</p>
-          </div>
-        )}
+        <div className="landing-hero text-center">
+          <h1 className="hero-brand">Lyricist</h1>
+          <p className="hero-subtitle">Find your favorite song lyrics in seconds.</p>
+        </div>
 
         <section className="search-section mx-auto">
           <SearchBar hideFilters={!hasSearched} isLarge={!hasSearched} />
