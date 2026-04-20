@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 
 function SongList() {
   const {
-    songs, isLoading, isError, error, isEmpty, query,
+    songs, isLoading, isLoadingMoreResults, isError, error, isEmpty, query,
     currentPage, totalPages, showPagination, totalResults,
     setCurrentPage
   } = useSearch();
@@ -48,6 +48,12 @@ function SongList() {
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
+      )}
+
+      {isLoadingMoreResults && (
+        <p className="loading-more-results" role="status" aria-live="polite">
+          Loading more results...
+        </p>
       )}
 
       <ul className="song-list">

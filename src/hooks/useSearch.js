@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useDebounce } from 'use-debounce';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { setQuery, setDebouncedQuery, setTag, setSort, setCurrentPage, resetFilters } from '../store/filtersSlice';
 import { useSearchSongsQuery } from '../services/geniusApi';
 
@@ -26,16 +25,10 @@ function sortSongs(songs, sort) {
 
 export function useSearch() {
   const dispatch = useDispatch();
-  const { query, debouncedQuery, tag, sort, currentPage } = useSelector((s) => s.filters);
-
-  const [debounced] = useDebounce(query, 500);
-
-  useEffect(() => {
-    dispatch(setDebouncedQuery(debounced));
-  }, [debounced, dispatch]);
+  const { query, debouncedQuery, tag, sort, currentPage, isLoadingMoreResults } = useSelector((s) => s.filters);
 
   const { data: songs, isLoading, isError, isFetching, error } = useSearchSongsQuery(
-    { q: debouncedQuery, tag, sort },
+    { q: debouncedQuery, tag },
     { skip: !debouncedQuery.trim() }
   );
 
@@ -57,6 +50,7 @@ export function useSearch() {
     songs: paginatedSongs,     
     allSongs: sortedSongs,      
     isLoading: isLoading || isFetching,
+    isLoadingMoreResults,
     isError,
     error,
     isEmpty: !isLoading && debouncedQuery.trim() && sortedSongs.length === 0,
@@ -68,6 +62,11 @@ export function useSearch() {
     totalResults,
 
     setQuery:       (val) => dispatch(setQuery(val)),
+    submitSearch:   (val) => dispatch(setDebouncedQuery(val ?? query)),
+    clearSearch:    ()    => {
+      dispatch(setQuery(''));
+      dispatch(setDebouncedQuery(''));
+    },
     setTag:         (val) => dispatch(setTag(val)),
     setSort:        (val) => dispatch(setSort(val)),
     setCurrentPage: (val) => dispatch(setCurrentPage(val)),

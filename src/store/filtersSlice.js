@@ -6,6 +6,7 @@ const initialState = {
   tag: "",
   sort: "",
   currentPage: 1, // ✅ added
+  isLoadingMoreResults: false,
 };
 
 const filtersSlice = createSlice({
@@ -23,9 +24,10 @@ const filtersSlice = createSlice({
     setTag:   (state, action) => { state.tag  = action.payload; },
     setSort:  (state, action) => { state.sort = action.payload; },
     setCurrentPage: (state, action) => { state.currentPage = action.payload; }, // ✅ added
+    setLoadingMoreResults: (state, action) => { state.isLoadingMoreResults = action.payload; },
     resetFilters: () => initialState,
   },
 });
 
-export const { setQuery, setDebouncedQuery, setTag, setSort, setCurrentPage, resetFilters } = filtersSlice.actions;
+export const { setQuery, setDebouncedQuery, setTag, setSort, setCurrentPage, setLoadingMoreResults, resetFilters } = filtersSlice.actions;
 export default filtersSlice.reducer;

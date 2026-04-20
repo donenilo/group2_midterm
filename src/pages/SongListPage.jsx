@@ -7,14 +7,15 @@ import SongList from '../components/SongList';
 import './SongPages.css';
 
 function SongListPage() {
-  const searchQuery = useSelector((state) => state.filters?.query || "");
+  const searchQuery = useSelector((state) => state.filters?.debouncedQuery || "");
   const hasSearched = searchQuery.trim().length > 0;
   
   // Para sa trends
-  const { setQuery } = useSearch();
+  const { setQuery, submitSearch } = useSearch();
 
   const handleTrendingClick = (artist) => {
     setQuery(artist);
+    submitSearch(artist);
   };
 
   return (

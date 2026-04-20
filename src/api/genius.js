@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const { q, id, path } = req.query;
+  const { q, id, path, per_page, page } = req.query;
 
   const GENIUS_TOKEN = process.env.GENIUS_ACCESS_TOKEN;
   const BASE = "https://api.genius.com";
@@ -10,7 +10,11 @@ export default async function handler(req, res) {
   } else if (path) {
     url = `${BASE}${path}`;
   } else {
-    url = `${BASE}/search?q=${encodeURIComponent(q || "")}`;
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (per_page) params.set("per_page", per_page);
+    if (page) params.set("page", page);
+    url = `${BASE}/search?${params.toString()}`;
   }
 
   const response = await fetch(url, {

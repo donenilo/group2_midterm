@@ -2,7 +2,7 @@ import React from 'react';
 import { useSearch } from '../hooks/useSearch';
 
 function SearchBar({ isLarge }) {
-  const { query, setQuery } = useSearch();
+  const { query, setQuery, submitSearch, clearSearch } = useSearch();
 
   return (
     <div className={`search-bar-wrapper ${isLarge ? 'large-view' : ''}`}>
@@ -18,6 +18,11 @@ function SearchBar({ isLarge }) {
           className="search-input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              submitSearch();
+            }
+          }}
           placeholder="Search for lyrics..."
         />
         
@@ -25,7 +30,7 @@ function SearchBar({ isLarge }) {
         {query && (
           <button 
             className="icon-btn clear-x" 
-            onClick={() => setQuery('')}
+            onClick={clearSearch}
             aria-label="Clear search"
           >
             ✕
