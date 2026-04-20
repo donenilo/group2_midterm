@@ -11,6 +11,7 @@ function SongList() {
   } = useSearch();
 
   const status = error?.status;
+  const errorData = error?.data;
   const skeletonItems = Array.from({ length: 8 }, (_, index) => index);
   let statusMessage = null;
 
@@ -38,7 +39,8 @@ function SongList() {
     if (status === 401) {
       statusMessage = 'Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.';
     } else if (status === 403) {
-      statusMessage = 'Genius API forbidden. Verify GENIUS_ACCESS_TOKEN is a valid Genius access token and not a client ID.';
+      const details = errorData?.meta?.message || errorData?.error || 'Forbidden by Genius API.';
+      statusMessage = `Genius API forbidden: ${details}`;
     } else if (status === 404) {
       statusMessage = 'API route not found. Ensure Vercel deployed the latest commit with API proxy routing.';
     } else {

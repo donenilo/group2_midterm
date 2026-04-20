@@ -1,7 +1,9 @@
 export default async function handler(req, res) {
   const { q, id, path, per_page, page } = req.query;
 
-  const geniusToken = process.env.GENIUS_ACCESS_TOKEN;
+  const geniusToken = (process.env.GENIUS_ACCESS_TOKEN || '')
+    .trim()
+    .replace(/^['\"]|['\"]$/g, '');
   const baseUrl = 'https://api.genius.com';
 
   let url;
