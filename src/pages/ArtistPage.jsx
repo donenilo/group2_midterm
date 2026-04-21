@@ -116,7 +116,7 @@ function ArtistPage() {
                         </p>
                       )}
                       <p className="album-track-count">
-                        {album.songs.length} tracks
+                        {album.track_count} tracks
                       </p>
                     </div>
                   </Link>
