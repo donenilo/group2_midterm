@@ -2,9 +2,10 @@ import { createHash } from 'node:crypto';
 
 export default async function handler(req, res) {
   const debugEnabled = String(req.query?.debug ?? '') === '1';
+  // Trim accidental wrapping quotes from env vars as a precaution (common in copying/pasting).
   const geniusToken = (process.env.GENIUS_ACCESS_TOKEN || '')
     .trim()
-    .replace(/^['\"]|['\"]$/g, '');
+    .replace(/^['"]|['"]$/g, '');
   const baseUrl = 'https://api.genius.com';
   const debugInfo = debugEnabled
     ? {
@@ -19,6 +20,7 @@ export default async function handler(req, res) {
     }
     : null;
 
+ // Error handling for missing token, which is required to proxy requests to the Genius API.
   if (!geniusToken) {
     res.status(500).json({
       error: 'GENIUS_ACCESS_TOKEN is not configured on this deployment.',
@@ -27,6 +29,7 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Vercel may expose catch-all parameters with slightly different keys.
   const rawPath = req.query?.geniusPath
     ?? req.query?.['...geniusPath']
     ?? req.query?.['[...geniusPath]'];
@@ -40,6 +43,7 @@ export default async function handler(req, res) {
   const endpointPath = `/${pathSegments.join('/')}`;
   const params = new URLSearchParams();
 
+  // Forward all query parameters except route/debug internals.
   Object.entries(req.query || {}).forEach(([key, value]) => {
     if (key === 'geniusPath' || key === '...geniusPath' || key === '[...geniusPath]' || key === 'debug') {
       return;
@@ -58,6 +62,7 @@ export default async function handler(req, res) {
   const targetUrl = `${baseUrl}${endpointPath}${queryString ? `?${queryString}` : ''}`;
 
   if (debugEnabled && debugInfo) {
+    // Include resolved upstream URL only in debug mode.
     debugInfo.targetUrl = targetUrl;
   }
 
@@ -67,6 +72,7 @@ export default async function handler(req, res) {
     });
 
     const contentType = response.headers.get('content-type') || '';
+    // Normalize non-JSON responses into JSON for consistent frontend handling.
     const payload = contentType.includes('application/json')
       ? await response.json()
       : { error: await response.text() };

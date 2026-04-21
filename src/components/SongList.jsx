@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSearch } from '../hooks/useSearch';
 import Pagination from './Pagination';
@@ -35,6 +34,7 @@ function SongList() {
       </div>
     );
   }
+  {/* Error Handling Messages */}
   if (isError) {
     if (status === 401) {
       statusMessage = 'Genius API unauthorized. Set GENIUS_ACCESS_TOKEN and restart deploy/dev server.';
@@ -52,7 +52,7 @@ function SongList() {
 
   return (
     <div>
-      {/* Pagination TOP — only shows if results exceed 20 */}
+      {/* Pagination TOP */}
       {showPagination && (
         <Pagination
           currentPage={currentPage}
@@ -67,12 +67,15 @@ function SongList() {
         </p>
       ) : (
         <>
+
+        {/* Loading More Results Hint Message */}
           {isLoadingMoreResults && (
             <p className="loading-more-results" role="status" aria-live="polite">
               Loading more results...
             </p>
           )}
-
+          
+          {/* Song List Container */}
           <ul className="song-list">
             {songs.map((song) => (
               <li key={song.id} className="song-item">
@@ -93,7 +96,7 @@ function SongList() {
             ))}
           </ul>
 
-          {/* Pagination BOTTOM — only shows if results exceed 20 */}
+          {/* Pagination BOTTOM */}
           {showPagination && (
             <Pagination
               currentPage={currentPage}

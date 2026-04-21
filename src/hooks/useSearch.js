@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { setQuery, setDebouncedQuery, setTag, setSort, setCurrentPage, resetFilters } from '../store/filtersSlice';
 import { useSearchSongsQuery } from '../services/geniusApi';
 
-const RESULTS_PER_PAGE = 20; //20 results per page
+const RESULTS_PER_PAGE = 20; //displays 20 results per page in the UI, pagination is client-side based on the full result set returned from the API
 
 function getReleaseTime(song) {
   const value = song?.release_date || song?.release_date_for_display;
@@ -27,17 +27,19 @@ export function useSearch() {
   const dispatch = useDispatch();
   const { query, debouncedQuery, tag, sort, currentPage, isLoadingMoreResults } = useSelector((s) => s.filters);
 
+  // Skip API calls until the user submits a non-empty query i.e. presses Enter or clicks the search button.
   const { data: songs, isLoading, isError, isFetching, error } = useSearchSongsQuery(
     { q: debouncedQuery, tag },
     { skip: !debouncedQuery.trim() }
   );
 
+  // Sorting happens client-side so users can switch sort instantly.
   const sortedSongs = useMemo(() => sortSongs(songs ?? [], sort), [songs, sort]);
 
-  //Pagination logic
+  // Derive paginated view from the full result set.
   const totalResults = sortedSongs.length;
   const totalPages = Math.ceil(totalResults / RESULTS_PER_PAGE);
-  const showPagination = totalResults > RESULTS_PER_PAGE; // only show if exceeds 20
+  const showPagination = totalResults > RESULTS_PER_PAGE;
   const paginatedSongs = sortedSongs.slice(
     (currentPage - 1) * RESULTS_PER_PAGE,
     currentPage * RESULTS_PER_PAGE
@@ -47,15 +49,15 @@ export function useSearch() {
     query,
     tag,
     sort,
-    songs: paginatedSongs,     
-    allSongs: sortedSongs,      
+    songs: paginatedSongs,
+    allSongs: sortedSongs,
     isLoading: isLoading || isFetching,
     isLoadingMoreResults,
     isError,
     error,
     isEmpty: !isLoading && debouncedQuery.trim() && sortedSongs.length === 0,
 
-    //Pagination
+    // Pagination state exposed to page/list components.
     currentPage,
     totalPages,
     showPagination,

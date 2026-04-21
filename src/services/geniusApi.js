@@ -3,6 +3,7 @@ import { setLoadingMoreResults } from "../store/filtersSlice";
 
 const UI_RESULTS_PER_PAGE = 20;
 const TARGET_UI_PAGES = 6;
+// Try to keep enough buffered results for smooth pagination.
 const TARGET_RESULTS = UI_RESULTS_PER_PAGE * TARGET_UI_PAGES;
 const MAX_BACKEND_PAGES = 12;
 
@@ -14,6 +15,7 @@ export const geniusApi = createApi({
     searchSongs: builder.query({
       async queryFn({ q, tag }, api, extraOptions, fetchWithBQ) {
         try {
+          // Reset incremental-loading flag whenever a new search starts.
           api.dispatch(setLoadingMoreResults(false));
 
           const searchText = [q, tag]
@@ -36,7 +38,8 @@ export const geniusApi = createApi({
             return Array.isArray(hits) ? hits.map((h) => h.result) : [];
           };
 
-          // First request is returned immediately for progressive rendering.
+          // Returns page 1 quickly, then hydrate the same cache entry with later pages. 
+          // Allows for progressive rendering.
           const firstPage = await fetchWithBQ(buildSearchPath(1));
           if (firstPage.error) return { error: firstPage.error };
 
@@ -56,6 +59,7 @@ export const geniusApi = createApi({
 
           if (pagesToFetch > 1) {
             api.dispatch(setLoadingMoreResults(true));
+            // Background fetch appends more unique results into the same query cache.
             (async () => {
               try {
                 for (let page = 2; page <= pagesToFetch; page += 1) {
@@ -110,8 +114,8 @@ export const geniusApi = createApi({
           };
         }
 
-        // Try the catch-all API route first, then fallback to the query-param route.
         // This prevents production breakage if /api/genius/[...geniusPath] is unavailable.
+        // Use catch-all endpoint first; fall back to query-param route for deployment compatibility.
         let response = await fetchWithBQ(`/songs/${id}`);
         if (response.error?.status === 404) {
           response = await fetchWithBQ(`?id=${encodeURIComponent(id)}`);
@@ -128,6 +132,7 @@ export const geniusApi = createApi({
           };
         }
 
+        // Normalize YouTube watch links into embeddable iframe URLs.
         let videoEmbed = song?.media?.find((m) => m.type === "video");
         if (videoEmbed?.url) {
           const watchUrlMatch = videoEmbed.url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
@@ -148,15 +153,8 @@ export const geniusApi = createApi({
       },
     }),
 
-    getSongReferents: builder.query({
-      query: (songId) => `/referents?song_id=${songId}&per_page=50`,
-      transformResponse: (res) => {
-        const referents = res?.response?.referents;
-        return Array.isArray(referents) ? referents : [];
-      },
-    }),
-
     getLyrics: builder.query({
+      // This endpoint calls lyrics.ovh directly, bypassing the Genius proxy baseUrl.
       query: ({ artist, title }) => {
         const encodedArtist = encodeURIComponent(artist);
         const encodedTitle = encodeURIComponent(title);
@@ -173,6 +171,7 @@ export const geniusApi = createApi({
           };
         }
 
+        // Same fallback strategy as song details: path route first, query route second.
         let response = await fetchWithBQ(`/artists/${id}`);
         if (response.error?.status === 404) {
           response = await fetchWithBQ(`?path=${encodeURIComponent(`/artists/${id}`)}`);
@@ -201,6 +200,7 @@ export const geniusApi = createApi({
           };
         }
 
+        // Request artist songs sorted by popularity; fallback keeps prod/dev behavior consistent.
         let response = await fetchWithBQ(`/artists/${id}/songs?per_page=50&sort=popularity`);
         if (response.error?.status === 404) {
           response = await fetchWithBQ(`?path=${encodeURIComponent(`/artists/${id}/songs?per_page=50&sort=popularity`)}`);
@@ -221,7 +221,6 @@ export const geniusApi = createApi({
 export const { 
   useSearchSongsQuery, 
   useGetSongByIdQuery, 
-  useGetSongReferentsQuery, 
   useGetLyricsQuery,
   useGetArtistByIdQuery,
   useGetArtistSongsQuery

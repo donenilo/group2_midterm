@@ -142,6 +142,10 @@ body {
   justify-content: center;
   margin-right: 8px; 
   min-width: 30px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
 }
 
 .search-icon img {
