@@ -433,10 +433,22 @@
 
   .artist-nav {
     padding: 0.75rem 1rem;
+
+  .artist-description {
+    font-size: 0.85rem;
+    max-height: 40px;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+}
   }
 
   .back-button {
-    padding: 0.4rem 0.8rem;
+  .loading-container,
+  .error-container {
     font-size: 0.85rem;
   }
 
@@ -444,17 +456,6 @@
     padding: 1rem 0.5rem;
   }
 
-  .artist-header-content {
-    grid-template-columns: 1fr;
-    gap: 0;
-    justify-items: center;
-  }
-
-  .artist-image {
-    max-width: 150px;
-    height: 150px;
-    border-radius: 0.75rem;
-  }
 
   .artist-info {
     width: 100%;
@@ -647,19 +648,6 @@
     margin-bottom: 0.5rem;
   }
 
-
-@media (prefers-color-scheme: dark) {
-  .artist-page,
-  .loading-container {
-    background: radial-gradient(circle at 20% 10%, rgba(82, 114, 158, 0.18) 0%, rgba(18, 21, 27, 0) 50%), radial-gradient(circle at 80% 90%, rgba(58, 86, 125, 0.12) 0%, rgba(18, 21, 27, 0) 45%), linear-gradient(160deg, #11161f 0%, #0c1118 100%);
-    color: #e5ecf6;
-  }
-
-  .artist-nav {
-    border-bottom-color: rgba(125, 144, 170, 0.2);
-  }
-
-
   .artist-description {
     font-size: 0.85rem;
     max-height: 40px;
@@ -670,6 +658,19 @@
     margin-bottom: 1rem;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .artist-page,
+  .loading-container,
+  .error-container {
+    background: radial-gradient(circle at 20% 10%, rgba(82, 114, 158, 0.18) 0%, rgba(18, 21, 27, 0) 50%), radial-gradient(circle at 80% 90%, rgba(58, 86, 125, 0.12) 0%, rgba(18, 21, 27, 0) 45%), linear-gradient(160deg, #11161f 0%, #0c1118 100%);
+    color: #e5ecf6;
+  }
+
+  .artist-nav {
+    border-bottom-color: rgba(125, 144, 170, 0.2);
+  }
+
   .back-button {
     background: rgba(83, 147, 255, 0.14);
     border-color: rgba(132, 177, 255, 0.45);
