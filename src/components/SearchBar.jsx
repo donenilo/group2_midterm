@@ -9,7 +9,7 @@ function SearchBar({ isLarge }) {
       <div className="search-pill">
         <span className="search-icon">
           <img 
-            src="https://img.freepik.com/premium-vector/search-icon-logo-vector-design-template_827767-481.jpg" 
+            src="/search-icon.png" 
             alt="Logo" 
           />
       </span>

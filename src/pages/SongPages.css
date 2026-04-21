@@ -246,8 +246,9 @@ body {
 }
 
 .loading-more-results {
-  width: min(1100px, calc(100% - 40px));
-  margin: 6px auto 0;
+  width: 100vw;
+  margin: 6px 0 0;
+  margin-left: calc(50% - 50vw);
   padding: 0;
   color: #5b6770;
   font-size: 0.9rem;
@@ -255,8 +256,9 @@ body {
 }
 
 .results-status-message {
-  width: min(1100px, calc(100% - 40px));
-  margin: 12px auto 0;
+  width: 100vw;
+  margin: 12px 0 0;
+  margin-left: calc(50% - 50vw);
   padding: 0;
   text-align: center;
 }
@@ -380,18 +382,6 @@ body {
   background: rgba(255, 255, 255, 0.25);
   border-color: rgba(255, 255, 255, 0.6);
   transform: translateY(-2px);
-}
-
-.hero-album-info {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-top: 0.3rem;
-  margin-bottom: 0;
-  width: fit-content;
 }
 
 .hero-info {
@@ -546,8 +536,11 @@ body {
 .songs-loading__header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
 .songs-loading__pulse {
@@ -779,8 +772,7 @@ body {
     aspect-ratio: 1 / 1;
   }
 
-  .hero-artist-link,
-  .hero-album-info {
+  .hero-artist-link {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
     margin-top: 0.25rem;
@@ -981,8 +973,7 @@ body {
     margin: 0 auto;
   }
 
-  .hero-artist-link,
-  .hero-album-info {
+  .hero-artist-link {
     padding: 0.65rem 1.2rem;
     font-size: 0.95rem;
   }
