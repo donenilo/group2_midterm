@@ -246,8 +246,9 @@ body {
 }
 
 .loading-more-results {
-  width: min(1100px, calc(100% - 40px));
-  margin: 6px auto 0;
+  width: 100vw;
+  margin: 6px 0 0;
+  margin-left: calc(50% - 50vw);
   padding: 0;
   color: #5b6770;
   font-size: 0.9rem;
@@ -255,8 +256,9 @@ body {
 }
 
 .results-status-message {
-  width: min(1100px, calc(100% - 40px));
-  margin: 12px auto 0;
+  width: 100vw;
+  margin: 12px 0 0;
+  margin-left: calc(50% - 50vw);
   padding: 0;
   text-align: center;
 }
@@ -534,8 +536,11 @@ body {
 .songs-loading__header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
 .songs-loading__pulse {
