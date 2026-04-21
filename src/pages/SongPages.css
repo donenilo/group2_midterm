@@ -6,17 +6,30 @@ body {
 }
 
 .home-wrapper {
-  height: 100%;
-
+  width: 100%;
   min-height: 100vh;
   transition: all 0.5s ease;
   padding-top: 0;
 }
 
+.main-content {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.mode-landing .main-content {
+  width: min(100%, 900px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* !!! LAYOUTS !!! */
 .mode-landing {
   background-size: cover;
-  height: calc(100vh - 70px);
+  min-height: calc(100dvh - 70px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,6 +58,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+  box-sizing: border-box;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -76,7 +90,7 @@ body {
 }
 
 .hero-brand {
-  font-size: 8rem; 
+  font-size: clamp(3rem, 10vw, 8rem);
   font-weight: 950; 
   color: #111;
   margin-bottom: 1.5rem;
@@ -174,11 +188,15 @@ body {
   color: #ccc;
   font-size: 1.1rem;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 4px;
   transition: color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 34px;
+  height: 34px;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
 .clear-x:hover {
@@ -250,9 +268,8 @@ body {
 }
 
 .loading-more-results {
-  width: 100vw;
+  width: 100%;
   margin: 6px 0 0;
-  margin-left: calc(50% - 50vw);
   padding: 0;
   color: #5b6770;
   font-size: 0.9rem;
@@ -260,9 +277,8 @@ body {
 }
 
 .results-status-message {
-  width: 100vw;
+  width: 100%;
   margin: 12px 0 0;
-  margin-left: calc(50% - 50vw);
   padding: 0;
   text-align: center;
 }
@@ -543,8 +559,7 @@ body {
   justify-content: center;
   gap: 10px;
   margin-bottom: 12px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
 }
 
 .songs-loading__pulse {
@@ -683,7 +698,8 @@ body {
   }
 
   .app {
-    max-height: 100vh;
+    min-height: 100dvh;
+    max-height: none;
   }
 
   .logo-text {
@@ -691,53 +707,79 @@ body {
   }
 
   .hero-brand {
-    font-size: 4rem;
-    letter-spacing: -2px;
-    margin-bottom: 1rem;
+    font-size: clamp(2.8rem, 14vw, 3.6rem);
+    letter-spacing: -1px;
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
   }
 
   .landing-hero {
-    margin-bottom: 1.5rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding-inline: 0.25rem;
   } 
 
   .hero-subtitle {
-    font-size: 1rem;  
-    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    max-width: 28ch;
+    margin: 0 auto 0.75rem;
+  }
+
+  .search-section {
+    padding: 0 6px;
   }
 
   .search-pill {
-    padding: 5px 10px;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 999px;
+    padding: 8px 12px;
   }
 
   .search-input {
     font-size: 1rem;
+    padding: 10px 8px;
   }
 
   .search-icon {
     font-size: 1rem;
-    margin-right: 5px;
+    margin-right: 4px;
+    min-width: 24px;
+  }
+
+  .clear-x {
+    width: 28px;
+    height: 28px;
+    font-size: 0.95rem;
+    padding: 2px;
+    margin-left: 2px;
   }
 
   .featured-trending {
-    margin-top: 1rem;
+    margin-top: 0.85rem;
     font-size: 0.8rem;
+    width: 100%;
+    text-align: center;
   }
 
   .trending-tag {
     font-size: 0.8rem;
-    margin: 0 6px;
+    margin: 0 4px;
     padding: 0.25rem 0;
+    line-height: 1.4;
+    display: inline-flex;
   }
 
   .song-list {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    padding: 20px 10px;
+    gap: 12px;
+    padding: 16px 8px;
   }
 
   .song-item__link img {
     margin-bottom: 8px;
-    width: 80%;
+    width: 100%;
   }
 
   .song-title {
@@ -913,8 +955,8 @@ body {
   }
 
   .hero-brand {
-    font-size: 4.5rem;
-    letter-spacing: -3px;
+    font-size: clamp(3rem, 10vw, 4.5rem);
+    letter-spacing: -1px;
   }
 
   .hero-subtitle {
@@ -940,10 +982,18 @@ body {
     font-size: 1.1rem;
   }
 
+  .clear-x {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    padding: 2px;
+    margin-left: 2px;
+  }
+
   .song-list {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    padding: 30px 15px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    padding: 22px 10px;
   }
 
   .song-title {
@@ -1034,8 +1084,8 @@ body {
   }
 
   .song-list {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
   }
 
   /* Song Details Page - keep side-by-side but adjust */
@@ -1070,6 +1120,11 @@ body {
 
   .home-wrapper {
     padding-top: 60px;
+    width: 100%;
+  }
+
+  .main-content {
+    padding: 0 12px;
   }
 
   .details-page {
@@ -1077,10 +1132,21 @@ body {
   }
 
   .mode-landing {
-    min-height: calc(100dvh - 60px);
     padding-top: 24px;
     padding-bottom: 24px;
     justify-content: center;
+  }
+
+  .mode-landing .main-content {
+    width: 100%;
+    min-height: calc(100dvh - 60px);
+    justify-content: center;
+  }
+
+  .landing-hero {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .mode-results .landing-hero {
@@ -1097,13 +1163,14 @@ body {
 
   .results-section {
     margin-top: 1.25rem !important;
+    width: 100%;
   }
 
   .results-section ul {
     max-width: 100%;
     padding: 20px 10px;
      grid-template-columns: repeat(2, 1fr);
-     margin-left: 3rem;
+     margin-left: 0;
   }
 }
 
