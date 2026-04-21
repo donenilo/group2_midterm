@@ -166,15 +166,52 @@ export const geniusApi = createApi({
     }),
 
     getArtistById: builder.query({
-      query: (id) => `/artists/${id}`,
-      transformResponse: (res) => res.response.artist,
+      async queryFn(id, _api, _extraOptions, fetchWithBQ) {
+        if (!id) {
+          return {
+            error: { status: "CUSTOM_ERROR", error: "Missing artist id." },
+          };
+        }
+
+        let response = await fetchWithBQ(`/artists/${id}`);
+        if (response.error?.status === 404) {
+          response = await fetchWithBQ(`?path=${encodeURIComponent(`/artists/${id}`)}`);
+        }
+
+        if (response.error) {
+          return { error: response.error };
+        }
+
+        const artist = response?.data?.response?.artist;
+        if (!artist) {
+          return {
+            error: { status: 404, data: { message: "Artist not found." } },
+          };
+        }
+
+        return { data: artist };
+      },
     }),
 
     getArtistSongs: builder.query({
-      query: (id) => `/artists/${id}/songs?per_page=50&sort=popularity`,
-      transformResponse: (res) => {
-        const songs = res?.response?.songs;
-        return Array.isArray(songs) ? songs : [];
+      async queryFn(id, _api, _extraOptions, fetchWithBQ) {
+        if (!id) {
+          return {
+            error: { status: "CUSTOM_ERROR", error: "Missing artist id." },
+          };
+        }
+
+        let response = await fetchWithBQ(`/artists/${id}/songs?per_page=50&sort=popularity`);
+        if (response.error?.status === 404) {
+          response = await fetchWithBQ(`?path=${encodeURIComponent(`/artists/${id}/songs?per_page=50&sort=popularity`)}`);
+        }
+
+        if (response.error) {
+          return { error: response.error };
+        }
+
+        const songs = response?.data?.response?.songs;
+        return { data: Array.isArray(songs) ? songs : [] };
       },
     }),
 
