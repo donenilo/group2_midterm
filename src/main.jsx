@@ -10,9 +10,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   // StrictMode enables extra development checks for safer React code.
   <React.StrictMode>
-    // Provider makes the Redux store available to all components.
+    {/* Provider makes the Redux store available to all components. */}
     <Provider store={store}>
-      // BrowserRouter enables route-based navigation using the URL.
+      {/* BrowserRouter enables route-based navigation using the URL. */}
       <BrowserRouter>
         <App />
       </BrowserRouter>
