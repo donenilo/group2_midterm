@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useGetSongByIdQuery, useGetLyricsQuery } from '../services/geniusApi';
 import './SongPages.css';

@@ -5,7 +5,7 @@ const initialState = {
   debouncedQuery: "",
   tag: "",
   sort: "",
-  currentPage: 1, // ✅ added
+  currentPage: 1,
   isLoadingMoreResults: false,
 };
 
@@ -23,7 +23,7 @@ const filtersSlice = createSlice({
     },
     setTag:   (state, action) => { state.tag  = action.payload; },
     setSort:  (state, action) => { state.sort = action.payload; },
-    setCurrentPage: (state, action) => { state.currentPage = action.payload; }, // ✅ added
+    setCurrentPage: (state, action) => { state.currentPage = action.payload; },
     setLoadingMoreResults: (state, action) => { state.isLoadingMoreResults = action.payload; },
     resetFilters: () => initialState,
   },

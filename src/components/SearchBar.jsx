@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSearch } from '../hooks/useSearch';
 
 function SearchBar({ isLarge }) {
@@ -6,29 +5,29 @@ function SearchBar({ isLarge }) {
 
   return (
     <div className={`search-bar-wrapper ${isLarge ? 'large-view' : ''}`}>
-      <div className="search-pill">
-        <span className="search-icon">
-          <img 
-            src="/search-icon.png" 
-            alt="Logo" 
-          />
-      </span>
+      <form
+        className="search-pill"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitSearch();
+        }}
+      >
+        <button type="submit" className="search-icon" aria-label="Search">
+          <img src="/search-icon.png" alt="" aria-hidden="true" />
+        </button>
+        {/* Allow users to submit by clicking the icon or pressing Enter. */}
         <input
           type="text"
           className="search-input"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              submitSearch();
-            }
-          }}
           placeholder="Search for lyrics..."
         />
         
         {/* X onli appears pag may tinype */}
         {query && (
-          <button 
+          <button
+            type="button"
             className="icon-btn clear-x" 
             onClick={clearSearch}
             aria-label="Clear search"
@@ -36,7 +35,7 @@ function SearchBar({ isLarge }) {
             ✕
           </button>
         )}
-      </div>
+      </form>
     </div>
   );
 }
